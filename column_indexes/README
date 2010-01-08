@@ -1,0 +1,62 @@
+= Column Indexes
+
+Column Indexes is a plugin that provides an option to create an index when
+defining the column in a migration or via <code>add_column</code>.
+
+Set the option <code>:index</code> to <code>true</code> to define an index.
+
+  create_table :users do |t|
+    t.string :role,   :index => true
+    ...
+  end
+
+By default the index will be non-unique; the option <code>:unique</code>
+can be set to <code>true</code> for a unique index.  As a convenient
+shorthand, you can simply set <code>:index</code> to <code>:unique</code>.
+Thus the following are equivalent:
+
+  t.string :userid, :index => true, :unique => true
+  t.string :userid, :index => :unique
+
+You can also define a multi-column index by using the option
+<code>:index_with</code> to list the additional column or columns:
+
+    create_table :users do |t|
+      t.integer :group_id
+      t.integer :member_number, :index_with => :group_id, :unique => true
+      t.integer :country_code
+      t.integer :area_code
+      t.string :local_phone,    :index_with => [:country_code, :area_code], :unique => true
+    end
+
+A multi-column index is symmetric in its columns and the index isn't
+created until after all columns are defined--so it's your stylistic choice
+as to which column to define the index on vs. which to list as the
+<code>:index_with</code> targets.
+
+By default the index will be named after the table and the first column
+name as per <code>ActiveRecord::ConnectionAdapters::add_index</code>.  Use
+the <code>:index_name</code> to specify a different name:
+
+  t.string :zipcode,    :index => true, :index_name => 'by_zip_code'
+
+For PostgreSQL the index will be case sensitive by default, but you can
+make it case insensitive (as per Redhillonrails Core) by specifying
+<code>:case_sensitive</code> as <code>false</code>
+
+  t.string :email,      :index => true, :case_sensitive => false
+
+The same options are available for <code>ActiveRecord::ConnectionAdapters::add_column</code>
+
+=== Dependencies
+
+* RedHill on Rails Core (redhillonrails_core).
+
+=== See Also
+
+
+=== License
+
+This plugin is copyright 2009 by Ronen Barzel (based on earlier work
+copyright 2006 by RedHill Consulting) and is released under the MIT
+license.  

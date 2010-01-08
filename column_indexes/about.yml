@@ -1,0 +1,5 @@
+author: ronen@barzel.org for simon@redhillconsulting.com.au
+summary: Provides :index option to for single-column indexes in migrations
+homepage: http://www.redhillonrails.org
+license: MIT
+rails_version: 2.x
